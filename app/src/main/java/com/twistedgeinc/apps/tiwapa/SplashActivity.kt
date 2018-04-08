@@ -24,10 +24,9 @@ class SplashActivity : AppCompatActivity() {
 
         } else {
 
-            val RegisterIntent: Intent = Intent(this, RegisterUserActivity::class.java)
-            startActivity(RegisterIntent)
+            val loginIntent: Intent = Intent(this, LoginActivity::class.java)
+            startActivity(loginIntent)
             finish()
-
         }
 
     }

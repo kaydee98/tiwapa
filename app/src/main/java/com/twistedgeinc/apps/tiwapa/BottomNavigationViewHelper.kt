@@ -10,7 +10,7 @@ import android.view.MenuItem
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
 class BottomNavigationViewHelper {
-    fun setupBottomNavigationView(bottomNavigationViewEx: BottomNavigationViewEx) {
+    fun setupBottonNavigationView(bottomNavigationViewEx: BottomNavigationViewEx) {
         bottomNavigationViewEx.enableAnimation(false)
         bottomNavigationViewEx.enableShiftingMode(false)
         bottomNavigationViewEx.enableItemShiftingMode(false)

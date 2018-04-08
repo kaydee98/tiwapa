@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationViewEx = findViewById<BottomNavigationViewEx>(R.id.bottom_navigation) as BottomNavigationViewEx
         val bottomNavigationViewHelper: BottomNavigationViewHelper = BottomNavigationViewHelper()
 
-        bottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx)
+        bottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx)
         bottomNavigationViewHelper.setNavigationItemSelectedLister(this@MainActivity,bottomNavigationViewEx)
         val menu = bottomNavigationViewEx.menu
         val menuItem = menu.getItem(MENU_ITEM_NUMBER)

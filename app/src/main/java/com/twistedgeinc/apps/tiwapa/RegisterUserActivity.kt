@@ -68,7 +68,7 @@ class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.signin_button -> {
 
-                Toast.makeText(this, "SignIn Successful", Toast.LENGTH_LONG)
+                Toast.makeText(this, "SignIn Successful", Toast.LENGTH_LONG).show()
             }
         }
     }

@@ -24,10 +24,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/noAnimationTheme" />
         <activity android:name=".RegisterUserActivity" />
-        <activity android:name=".ProfileActivity"
+        <activity
+            android:name=".ProfileActivity"
             android:label="Profile"
             android:screenOrientation="portrait"
-            android:theme="@style/noAnimationTheme" ></activity>
+            android:theme="@style/noAnimationTheme" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
