@@ -16,4 +16,12 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <!--
+    - Style to disable Activity Aninimation when switching activities
+    - It is used as the style attribute of the Activity in the Manifest
+    -->
+    <style name="noAnimationTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 </resources>

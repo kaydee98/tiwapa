@@ -22,8 +22,12 @@
             android:name=".MainActivity"
             android:label="Home"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
-        <activity android:name=".RegisterUserActivity"></activity>
+            android:theme="@style/noAnimationTheme" />
+        <activity android:name=".RegisterUserActivity" />
+        <activity android:name=".ProfileActivity"
+            android:label="Profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/noAnimationTheme" ></activity>
     </application>
 
 </manifest>
