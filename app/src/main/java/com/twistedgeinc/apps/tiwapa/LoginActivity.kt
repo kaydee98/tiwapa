@@ -34,24 +34,23 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() {
 
-        if( isValidForm()) {
-            val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-            val authTask = firebaseAuth.signInWithEmailAndPassword(emailAddressEditText!!.text.toString(), passwordEditText!!.text.toString())
-
-            authTask.addOnSuccessListener {
-                val mainIntent: Intent = Intent(this, MainActivity::class.java)
-                startActivity(mainIntent)
-                finish()
-            }
-
-            authTask.addOnFailureListener {exception:Exception ->
-
-                Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
-            }
-
-        } else
-        {
+        if( !isValidForm()) {
             emailAddressEditText!!.requestFocus()
+            return
+        }
+
+        val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        val authTask = firebaseAuth.signInWithEmailAndPassword(emailAddressEditText!!.text.toString(), passwordEditText!!.text.toString())
+
+        authTask.addOnSuccessListener {
+            val mainIntent: Intent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
+            finish()
+        }
+
+        authTask.addOnFailureListener {exception:Exception ->
+
+            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
         }
 
     }
