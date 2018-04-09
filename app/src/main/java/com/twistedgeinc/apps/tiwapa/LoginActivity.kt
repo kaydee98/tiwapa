@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity() {
 
     var emailAddressEditText: EditText? = null
     var passwordEditText: EditText? = null
@@ -20,34 +20,38 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         emailAddressEditText = findViewById<EditText>(R.id.email_address)
         passwordEditText = findViewById<EditText>(R.id.password)
-        val loginButton = findViewById<Button>(R.id.signin_button)
-        val registerButton = findViewById<Button>(R.id.register_button)
 
-        loginButton.setOnClickListener(this)
-        registerButton.setOnClickListener(this)
+        findViewById<Button>(R.id.signin_button).setOnClickListener({ loginUser()})
+        findViewById<Button>(R.id.register_button).setOnClickListener( {gotoRegisterActivity()})
+
     }
 
-    override fun onClick(view: View) {
+    private fun gotoRegisterActivity() {
+        val RegisterIntent: Intent = Intent(this, RegisterUserActivity::class.java)
+        startActivity(RegisterIntent)
+        finish()
+    }
 
-        when(view.id){
+    private fun loginUser() {
 
-            R.id.signin_button -> {
+        if( isValidForm()) {
+            val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+            val authTask = firebaseAuth.signInWithEmailAndPassword(emailAddressEditText!!.text.toString(), passwordEditText!!.text.toString())
 
-                if( isValidForm()) {
-                    val emailAddress = emailAddressEditText!!.text.toString()
-                    val password = passwordEditText!!.text.toString()
-                    signInUser(emailAddress, password)
-                } else
-                {
-                    emailAddressEditText!!.requestFocus()
-                }
-            }
-
-            R.id.register_button -> {
-                val RegisterIntent: Intent = Intent(this, RegisterUserActivity::class.java)
-                startActivity(RegisterIntent)
+            authTask.addOnSuccessListener {
+                val mainIntent: Intent = Intent(this, MainActivity::class.java)
+                startActivity(mainIntent)
                 finish()
             }
+
+            authTask.addOnFailureListener {exception:Exception ->
+
+                Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
+            }
+
+        } else
+        {
+            emailAddressEditText!!.requestFocus()
         }
 
     }
@@ -60,22 +64,5 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         return bValid
 
-    }
-
-    private fun signInUser(emailAddress: String, password: String) {
-        val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
-        val authTask = firebaseAuth.signInWithEmailAndPassword(emailAddress, password)
-
-        authTask.addOnSuccessListener() {
-            val mainIntent: Intent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
-            finish()
-        }
-
-        authTask.addOnFailureListener {exception:Exception ->
-
-            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
-        }
     }
 }

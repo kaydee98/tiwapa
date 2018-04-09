@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.lang.Exception
 
-class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
+class RegisterUserActivity : AppCompatActivity() {
 
     private var mEmail: EditText? = null
     private var mPassword: EditText? = null
@@ -35,47 +35,39 @@ class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
         val registerButtom = findViewById<Button>(R.id.register_button)
         val signInButton = findViewById<Button>(R.id.signin_button)
 
-        registerButtom.setOnClickListener(this)
-        signInButton.setOnClickListener(this)
-
+        registerButtom.setOnClickListener({registerUser() })
+        signInButton.setOnClickListener({gotoLoginActivity()})
 
     }
 
-    override fun onClick(view: View) {
-        when(view.id) {
-            R.id.register_button -> {
+    private fun registerUser() {
 
-                //TODO: Valid Data form and return appropriate errors
-                val auth: FirebaseAuth = FirebaseAuth.getInstance()
+        //TODO: Valid Data form and return appropriate errors
+        val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-                val createUserTask = auth.createUserWithEmailAndPassword(mEmail?.text.toString(), mPassword?.text.toString())
+        val createUserTask = auth.createUserWithEmailAndPassword(mEmail?.text.toString(), mPassword?.text.toString())
 
-                createUserTask.addOnSuccessListener(this, OnSuccessListener { authResult: AuthResult ->
-                    //TODO: Update additional User Information
-                    //TODO: Update FirstName and LastName
-                    //TODO: Update Profile Picture
-                    //TODO: Return to Profile Page or Home?
-                    //TODO: Send Email Verification
+        createUserTask.addOnSuccessListener(this, OnSuccessListener { authResult: AuthResult ->
+            //TODO: Update additional User Information
+            //TODO: Update FirstName and LastName
+            //TODO: Update Profile Picture
+            //TODO: Return to Profile Page or Home?
+            //TODO: Send Email Verification
 
-                    toast("Registation Successful for " + authResult.user.email, Toast.LENGTH_LONG)
-                })
+            val mainIntent: Intent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
+            finish()
+        })
 
-                createUserTask.addOnFailureListener(OnFailureListener { exception: Exception ->
-                    //TODO: Display Error message
-                    toast( exception.localizedMessage, Toast.LENGTH_LONG)
-                })
+        createUserTask.addOnFailureListener(OnFailureListener { exception: Exception ->
+            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
+        })
 
-            }
-            R.id.signin_button -> {
-
-                Toast.makeText(this, "SignIn Successful", Toast.LENGTH_LONG).show()
-            }
-        }
     }
 
-
-    fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, message, duration).show()
+    private fun gotoLoginActivity() {
+        val logInIntent: Intent = Intent(this, LoginActivity::class.java)
+        startActivity(logInIntent)
+        finish()
     }
-
 }
