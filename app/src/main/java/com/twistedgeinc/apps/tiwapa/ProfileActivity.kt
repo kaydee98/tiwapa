@@ -7,7 +7,7 @@ import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
-class ProfileActivity: AppCompatActivity(), View.OnClickListener{
+class ProfileActivity: AppCompatActivity() {
     private val MENU_ITEM_NUMBER: Int = 4
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -15,17 +15,9 @@ class ProfileActivity: AppCompatActivity(), View.OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-
-
-        val signOutButton: Button = findViewById<Button>(R.id.signout_button)
-        signOutButton.setOnClickListener(this)
+        findViewById<Button>(R.id.signout_button).setOnClickListener( { firebaseAuth.signOut() })
 
         setUpBottonNavigationView()
-    }
-
-    override fun onClick(v: View?) {
-
-        firebaseAuth.signOut()
     }
 
     private fun setUpBottonNavigationView() {

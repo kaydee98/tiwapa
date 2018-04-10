@@ -6,18 +6,23 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.lang.Exception
 
-class RegisterUserActivity : AppCompatActivity() {
 
+class RegisterUserActivity : AppCompatActivity() {
+    private val TAG = "Register Activity:"
     private var emailEditText: EditText? = null
     private var passwordEditText: EditText? = null
     private var passwordEditText2: EditText? = null
@@ -37,10 +42,10 @@ class RegisterUserActivity : AppCompatActivity() {
         lastNameEditText = findViewById(R.id.last_name)
         //displayNameEditText = findViewById(R.id.display_name)
 
-        val registerButtom = findViewById<Button>(R.id.register_button)
+        val registerButton = findViewById<Button>(R.id.register_button)
         val signInButton = findViewById<Button>(R.id.signin_button)
 
-        registerButtom.setOnClickListener({registerUser() })
+        registerButton.setOnClickListener({registerUser() })
         signInButton.setOnClickListener({gotoLoginActivity()})
 
     }
@@ -54,21 +59,31 @@ class RegisterUserActivity : AppCompatActivity() {
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val createUserTask = auth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
 
-        createUserTask.addOnSuccessListener(this, OnSuccessListener { authResult: AuthResult ->
-            //TODO: Progress Bar
-            //TODO: Update additional User Information (DisplayName and PhotoURL)
-            //TODO: Update FirstName and LastName (Write these to the user_profile nodes of the Database )
-            //TODO: Return to Profile Page or Home?
-            //TODO: Send Email Verification
+        createUserTask.addOnSuccessListener(this,  { authResult: AuthResult -> createUserSuccessListener(authResult) })
+        createUserTask.addOnFailureListener( { exception: Exception -> logAndReportError( exception) } )
+    }
 
-            val mainIntent: Intent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
-            finish()
-        })
+    private fun createUserSuccessListener(authResult: AuthResult) {
 
-        createUserTask.addOnFailureListener(OnFailureListener { exception: Exception ->
-            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
-        })
+        //TODO: Progress Bar
+        //TODO: Update additional User Information (DisplayName and PhotoURL)
+        //uploadProfilePhoto
+        //updatedUserProfile(authResult.user, displayName, profilePhotoURL)
+        //TODO: Update FirstName and LastName (Write these to the user_profile nodes of the Database )
+        //TODO: Send Email Verification
+
+        val mainIntent: Intent = Intent(this, MainActivity::class.java)
+        startActivity(mainIntent)
+        finish()
+
+    }
+
+    private fun logAndReportError( exception: Exception){
+        Log.d(TAG, exception.toString())
+        Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
+    }
+
+    private fun updatedUserProfile(authUser: FirebaseUser, displayName: String, profilePhotoURL: String) {
 
     }
 

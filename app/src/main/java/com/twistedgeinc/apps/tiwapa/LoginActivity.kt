@@ -18,8 +18,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        emailAddressEditText = findViewById<EditText>(R.id.email_address)
-        passwordEditText = findViewById<EditText>(R.id.password)
+        emailAddressEditText = findViewById(R.id.email_address)
+        passwordEditText = findViewById(R.id.password)
 
         findViewById<Button>(R.id.signin_button).setOnClickListener({ loginUser()})
         findViewById<Button>(R.id.register_button).setOnClickListener( {gotoRegisterActivity()})
@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun gotoRegisterActivity() {
-        val RegisterIntent: Intent = Intent(this, RegisterUserActivity::class.java)
+        val RegisterIntent = Intent(this, RegisterUserActivity::class.java)
         startActivity(RegisterIntent)
         finish()
     }
