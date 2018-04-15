@@ -1,11 +1,15 @@
 package com.twistedgeinc.apps.tiwapa
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+import com.squareup.picasso.Picasso
+import com.twistedgeinc.apps.tiwapa.utils.BottomNavigationViewHelper
 
 class ProfileActivity: AppCompatActivity() {
     private val MENU_ITEM_NUMBER: Int = 4
@@ -15,9 +19,21 @@ class ProfileActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        findViewById<Button>(R.id.signout_button).setOnClickListener( { firebaseAuth.signOut() })
+        val profileImageView = findViewById<ImageView>(R.id.profile_image)
+        val firstNameTextView = findViewById<TextView>(R.id.user_firstname)
+        findViewById<Button>(R.id.signout_button).setOnClickListener({signOut()})
+
+        val profilePhotoUrl = firebaseAuth.currentUser!!.photoUrl
+        Picasso.get().load(profilePhotoUrl).into(profileImageView)
 
         setUpBottonNavigationView()
+    }
+
+    fun signOut() {
+        firebaseAuth.signOut()
+        val loginInIntent = Intent(this, LoginActivity::class.java)
+        startActivity(loginInIntent)
+
     }
 
     private fun setUpBottonNavigationView() {

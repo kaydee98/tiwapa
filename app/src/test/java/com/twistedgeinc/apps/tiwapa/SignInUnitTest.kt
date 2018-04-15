@@ -1,5 +1,6 @@
 package com.twistedgeinc.apps.tiwapa
 
+import com.twistedgeinc.apps.tiwapa.models.TiwapaUser
 import org.junit.Assert.*
 import org.junit.Test
 

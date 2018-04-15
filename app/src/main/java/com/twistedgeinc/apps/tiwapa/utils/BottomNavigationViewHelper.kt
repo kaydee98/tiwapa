@@ -1,13 +1,17 @@
-package com.twistedgeinc.apps.tiwapa
+package com.twistedgeinc.apps.tiwapa.utils
 
 
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+import com.twistedgeinc.apps.tiwapa.MainActivity
+import com.twistedgeinc.apps.tiwapa.ProfileActivity
+import com.twistedgeinc.apps.tiwapa.R
 
 
 class BottomNavigationViewHelper {
+
     fun setupBottonNavigationView(bottomNavigationViewEx: BottomNavigationViewEx) {
         bottomNavigationViewEx.enableAnimation(false)
         bottomNavigationViewEx.enableShiftingMode(false)

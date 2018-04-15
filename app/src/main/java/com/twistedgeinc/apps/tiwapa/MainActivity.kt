@@ -3,6 +3,7 @@ package com.twistedgeinc.apps.tiwapa
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+import com.twistedgeinc.apps.tiwapa.utils.BottomNavigationViewHelper
 
 
 class MainActivity : AppCompatActivity() {

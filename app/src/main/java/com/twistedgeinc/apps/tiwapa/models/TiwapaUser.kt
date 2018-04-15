@@ -1,4 +1,4 @@
-package com.twistedgeinc.apps.tiwapa
+package com.twistedgeinc.apps.tiwapa.models
 
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth

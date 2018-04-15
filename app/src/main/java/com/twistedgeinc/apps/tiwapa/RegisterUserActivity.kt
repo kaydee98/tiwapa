@@ -1,34 +1,60 @@
 package com.twistedgeinc.apps.tiwapa
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
+import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import java.lang.Exception
+import android.widget.*
+import com.google.firebase.auth.*
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import com.twistedgeinc.apps.tiwapa.utils.CameraStoragePermissions
+import com.twistedgeinc.apps.tiwapa.utils.ImageUtils
+import java.util.*
+import kotlin.Exception
+import com.google.firebase.firestore.FirebaseFirestore
 
+
+
+/* TODO: [Begin TODO]
+ 1.a Add progress indicator
+ 1.b take a picture [DONE with bugs in emulator works fine on Samsung]
+ 2. Clean up email notification message etc
+ 3. Look through flow to ensure in case there's an error two things happen
+ - 1. user account gets created
+ - 2. user information is written to database
+ - 3. Write file to database
+ - 4. Update profile and display name
+ - 5. send email verification 
+ TODO: [End TODO]
+*/
+
+const val VALIDATE_PERMISSION_REQUEST_CODE = 10
+const val TAG = "Register Activity:"
+const val CAMERA_REQUEST_CODE = 10
+const val GALLERY_REQUEST_CODE = 20
+const val IMAGE_URL_PREFIX = "file://"
+const val USER_PHOTOS_PATH = "user_photos"
+const val PROFILE_PHOTOS = "profile_photos"
+const val USER_PROFILE_NODE = "users"
 
 class RegisterUserActivity : AppCompatActivity() {
-    private val TAG = "Register Activity:"
     private var emailEditText: EditText? = null
     private var passwordEditText: EditText? = null
     private var passwordEditText2: EditText? = null
     private var firstNameEditText: EditText? = null
     private var lastNameEditText: EditText? = null
-    //private var displayNameEditText: EditText? = null
+    private var profileImage: ImageView? = null
+
+    private var mImagePath: String = ""
+    private val imageUtils = ImageUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +66,82 @@ class RegisterUserActivity : AppCompatActivity() {
         passwordEditText2 = findViewById(R.id.password2)
         firstNameEditText = findViewById(R.id.first_name)
         lastNameEditText = findViewById(R.id.last_name)
-        //displayNameEditText = findViewById(R.id.display_name)
 
+        profileImage = findViewById<ImageView>(R.id.profile_image)
         val registerButton = findViewById<Button>(R.id.register_button)
         val signInButton = findViewById<Button>(R.id.signin_button)
 
         registerButton.setOnClickListener({registerUser() })
         signInButton.setOnClickListener({gotoLoginActivity()})
+        profileImage!!.setOnClickListener( { addProfilePhoto() })
 
+        val packageManager = packageManager
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
+            Toast.makeText(this, "This device does not have a camera.", Toast.LENGTH_SHORT)
+                    .show()
+            this.finish()
+        }
+
+
+    }
+
+    private fun addProfilePhoto() {
+
+        if (checkPermissionsArray(CameraStoragePermissions.PERMISSIONS)) {
+
+        } else {
+            validatePermissionsArray(CameraStoragePermissions.PERMISSIONS)
+        }
+
+        //show Photo Popup Menu
+        val popup = PopupMenu(this, profileImage)
+        popup.setOnMenuItemClickListener { menuItem -> onPhotoMenuItemClicked( menuItem)  }
+        popup.inflate(R.menu.picture_actions)
+        popup.show()
+
+    }
+
+    private fun onPhotoMenuItemClicked(menuItem: MenuItem): Boolean {
+        when(menuItem.itemId){
+            R.id.picture_action_camera -> {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+                return true
+            }
+            R.id.picture_action_gallery -> {
+                val photoGalleryIntent = Intent(Intent.ACTION_PICK)
+                photoGalleryIntent.type = "image/*"
+                startActivityForResult(photoGalleryIntent, GALLERY_REQUEST_CODE)
+                return true
+            }
+            else -> return false
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            mImagePath = getImageUrlFromData(data!!)
+
+            Picasso.get()
+                    .load(IMAGE_URL_PREFIX + mImagePath)
+                    .into(profileImage)
+        }
+
+    }
+
+    fun getImageUrlFromData(data: Intent): String {
+        var imageurl = ""
+        val imageUri = data.data  //FIXME: On emulator this returns null but not on device
+
+
+        if (imageUri != null) {
+            val imageItem = imageUtils.getImageFromUri(this, imageUri)
+            imageurl = imageItem.imageData
+        }
+
+        return imageurl
     }
 
     private fun registerUser() {
@@ -57,34 +151,71 @@ class RegisterUserActivity : AppCompatActivity() {
         }
 
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
-        val createUserTask = auth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
 
-        createUserTask.addOnSuccessListener(this,  { authResult: AuthResult -> createUserSuccessListener(authResult) })
-        createUserTask.addOnFailureListener( { exception: Exception -> logAndReportError( exception) } )
+        auth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
+                .addOnSuccessListener(this,  { authResult: AuthResult -> uploadProfileImage(authResult) })
+                .addOnFailureListener( { exception: Exception  -> logAndReportError( exception) } )
     }
 
-    private fun createUserSuccessListener(authResult: AuthResult) {
+    private fun uploadProfileImage(authResult: AuthResult) {
 
-        //TODO: Progress Bar
-        //TODO: Update additional User Information (DisplayName and PhotoURL)
-        //uploadProfilePhoto
-        //updatedUserProfile(authResult.user, displayName, profilePhotoURL)
-        //TODO: Update FirstName and LastName (Write these to the user_profile nodes of the Database )
-        //TODO: Send Email Verification
+        val displayName = firstNameEditText?.text.toString() + " " + lastNameEditText?.text.toString()
+        val currentUser = authResult.user
 
-        val mainIntent: Intent = Intent(this, MainActivity::class.java)
+        if (mImagePath.isEmpty()) {
+
+            updatedUserProfile(currentUser, displayName, null)
+
+        } else {
+
+
+            val profilePhotoStoragePath = "$USER_PHOTOS_PATH/${currentUser.uid}/$PROFILE_PHOTOS/${UUID.randomUUID().toString()}"
+            val firebaseStorageRef = FirebaseStorage.getInstance().getReference().child(profilePhotoStoragePath)
+
+            firebaseStorageRef.putBytes(imageUtils.compressImage( mImagePath))
+                    .addOnSuccessListener {taskSnapshot ->
+
+                        updatedUserProfile(currentUser, displayName, taskSnapshot.downloadUrl!!)
+                        createNewUser(currentUser.uid)
+
+                    }
+                    .addOnFailureListener{ exception -> logAndReportError( exception ) }
+        }
+
+
+        val mainIntent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)
         finish()
 
     }
 
+    private fun createNewUser(currentUserId: String) {
+        val firestoreDB  = FirebaseFirestore.getInstance()
+        val user =  mutableMapOf<String, Any>()
+
+        user["firstname"] = firstNameEditText?.text.toString()
+        user["lastname"] = lastNameEditText?.text.toString()
+
+        firestoreDB.document("$USER_PROFILE_NODE/$currentUserId").set(user)
+                .addOnSuccessListener( { Log.d(TAG, "Document added" ) })
+                .addOnFailureListener( { exception -> logAndReportError(exception) })
+    }
+
+    private fun updatedUserProfile(authUser: FirebaseUser, displayName: String, profilePhotoUri: Uri? ) {
+
+        val userProfileChangeRequest = UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName)
+                .setPhotoUri(profilePhotoUri)
+                .build()
+
+        authUser.updateProfile(userProfileChangeRequest)
+                .addOnSuccessListener { authUser.sendEmailVerification() }
+                .addOnFailureListener {  exception -> logAndReportError( exception ) }
+    }
+
     private fun logAndReportError( exception: Exception){
         Log.d(TAG, exception.toString())
         Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
-    }
-
-    private fun updatedUserProfile(authUser: FirebaseUser, displayName: String, profilePhotoURL: String) {
-
     }
 
     private fun gotoLoginActivity() {
@@ -141,5 +272,20 @@ class RegisterUserActivity : AppCompatActivity() {
         if (!valid) focusView!!.requestFocus()
         return valid
 
+    }
+
+    private fun checkPermissionsArray(permissions: Array<String>): Boolean {
+
+        for (i in permissions.indices) {
+            val permission = permissions[i]
+            val permissionRequest = ActivityCompat.checkSelfPermission(this, permission)
+            if (permissionRequest != PackageManager.PERMISSION_GRANTED)
+                return false
+        }
+        return true
+    }
+
+    private fun validatePermissionsArray(permissions: Array<String>) {
+        ActivityCompat.requestPermissions(this, permissions, VALIDATE_PERMISSION_REQUEST_CODE)
     }
 }

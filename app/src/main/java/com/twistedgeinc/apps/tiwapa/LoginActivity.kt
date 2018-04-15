@@ -40,27 +40,22 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-        val authTask = firebaseAuth.signInWithEmailAndPassword(emailAddressEditText!!.text.toString(), passwordEditText!!.text.toString())
 
-        authTask.addOnSuccessListener {
-            val mainIntent: Intent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
-            finish()
-        }
+        firebaseAuth.signInWithEmailAndPassword(emailAddressEditText!!.text.toString(), passwordEditText!!.text.toString())
+                .addOnSuccessListener {
+                    val mainIntent: Intent = Intent(this, MainActivity::class.java)
+                    startActivity(mainIntent)
+                    finish()
+                }
+                .addOnFailureListener {exception:Exception ->
 
-        authTask.addOnFailureListener {exception:Exception ->
-
-            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
-        }
+                    Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_LONG).show()
+                 }
 
     }
 
     private fun isValidForm(): Boolean {
-
-        var bValid: Boolean = false
-
-        bValid = (emailAddressEditText!!.text.isNotBlank() && passwordEditText!!.text.isNotBlank())
-
+        val bValid = (emailAddressEditText!!.text.isNotBlank() && passwordEditText!!.text.isNotBlank())
         return bValid
 
     }
