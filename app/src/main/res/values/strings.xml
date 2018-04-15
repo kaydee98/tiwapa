@@ -8,4 +8,20 @@
     <string name="menu_profile_title">Profile</string>
     <string name="menu_notification_title">Notifications</string>
 
+    <!--LogIn Activity Strings  -->
+    <string name="email_address">Email Address</string>
+    <string name="password_text">Password</string>
+    <string name="sign_in_text">Sign In</string>
+    <string name="cick_here_to_register">Cick here to Register</string>
+    <string name="tiwapa_logo_text">tiwapa logo</string>
+
+    <!-- RegisterUser Activity Strings -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="register_text">Register</string>
+    <string name="click_to_sign_in">Registered already? Then Click to Sign In</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="profile_image_text">Profile Image</string>
+
+
 </resources>
