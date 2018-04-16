@@ -23,8 +23,11 @@
     <string name="re_enter_password">Re-enter Password</string>
     <string name="profile_image_text">Profile Image</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- MyFamily Feature Strings -->
+    <string name="frag_parent_title">Parents</string>
+    <string name="frag_sibling_title">Sibling</string>
+    <string name="frag_children_title">Children</string>
+    <string name="frag_life_events_title">Life Events</string>
 
 
 </resources>
