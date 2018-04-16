@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.twistedgeinc.apps.tiwapa">
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
@@ -35,7 +39,9 @@
             android:label="Profile"
             android:screenOrientation="portrait"
             android:theme="@style/noAnimationTheme" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".family.MyFamily"
+            android:theme="@style/noAnimationTheme"/>
     </application>
 
 </manifest>

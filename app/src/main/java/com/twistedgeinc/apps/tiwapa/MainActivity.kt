@@ -5,10 +5,8 @@ import android.os.Bundle
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import com.twistedgeinc.apps.tiwapa.utils.BottomNavigationViewHelper
 
-
+const val MENU_ITEM_NUMBER: Int = 0
 class MainActivity : AppCompatActivity() {
-    val MENU_ITEM_NUMBER: Int = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +15,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpBottomNavigationView() {
-        val bottomNavigationViewEx = findViewById<BottomNavigationViewEx>(R.id.bottom_navigation) as BottomNavigationViewEx
-        val bottomNavigationViewHelper: BottomNavigationViewHelper = BottomNavigationViewHelper()
+        val bottomNavigationViewEx = findViewById(R.id.bottom_navigation) as BottomNavigationViewEx
+        val bottomNavigationViewHelper = BottomNavigationViewHelper()
 
         bottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx)
         bottomNavigationViewHelper.setNavigationItemSelectedLister(this@MainActivity,bottomNavigationViewEx)
