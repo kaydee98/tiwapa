@@ -1,25 +1,18 @@
 package com.twistedgeinc.apps.tiwapa.models
 
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.FirebaseAuth
+import com.twistedgeinc.apps.tiwapa.IAuthProvider
 
-class TiwapaUser {
 
-    fun signInWith(email: String, password: String): Boolean {
-        //val auth: FirebaseAuth = FirebaseAuth.getInstance()
-        var signInSucceed: Boolean = true
+class TiwapaUser(authProvider: IAuthProvider) {
 
-//        val signInWithEmailAndPasswordTask = auth.signInWithEmailAndPassword(email, password)
-//
-//        signInWithEmailAndPasswordTask.addOnSuccessListener(OnSuccessListener {
-//            signInSucceed =  true
-//        })
-//
-//        signInWithEmailAndPasswordTask.addOnFailureListener {
-//            signInSucceed = false
-//        }
+    private var _profile = TiwapaPerson()
+    var user_id: String = authProvider.user_id
+    var isAuthenticated: Boolean = authProvider.isAuthenticated
+    var displayName: String = authProvider.displayName
+    var photoUrl: String = authProvider.photoUrl
 
-        return signInSucceed
+    var profile
+        get() = _profile
+        set(value) {_profile = value }
 
-    }
 }

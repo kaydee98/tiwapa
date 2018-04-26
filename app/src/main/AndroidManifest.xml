@@ -40,8 +40,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/noAnimationTheme" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".family.MyFamily"
-            android:theme="@style/noAnimationTheme"/>
+        <activity
+            android:name=".family.MyFamily"
+            android:theme="@style/noAnimationTheme" />
+        <activity android:name=".family.AddRelativeActivity"></activity>
     </application>
 
 </manifest>
