@@ -8,7 +8,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import com.twistedgeinc.apps.tiwapa.MainActivity
 import com.twistedgeinc.apps.tiwapa.ProfileActivity
 import com.twistedgeinc.apps.tiwapa.R
-import com.twistedgeinc.apps.tiwapa.family.MyFamily
+import com.twistedgeinc.apps.tiwapa.family.MyFamilyActivity
 
 
 class BottomNavigationViewHelper {
@@ -26,7 +26,7 @@ class BottomNavigationViewHelper {
             val intent = when( menuItem.itemId) {
 
                 R.id.menu_home -> Intent(context, MainActivity::class.java)
-                R.id.menu_myfamily -> Intent(context, MyFamily::class.java)
+                R.id.menu_myfamily -> Intent(context, MyFamilyActivity::class.java)
                 R.id.menu_search -> Intent(context, MainActivity::class.java) //TODO: Replace Placeholder Intent
                 R.id.menu_notification -> Intent(context, MainActivity::class.java) //TODO: Replace Placeholder Intent
                 R.id.menu_profile ->  Intent(context, ProfileActivity::class.java)

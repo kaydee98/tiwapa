@@ -30,4 +30,14 @@
     <string name="frag_life_events_title">Life Events</string>
 
 
+    <string-array name="relativeTypes_array">
+        <item>Select Relative Type</item>
+        <item>Parent</item>
+        <item>Spouse</item>
+        <item>Child</item>
+        <item>Sibling</item>
+    </string-array>
+
+
+
 </resources>

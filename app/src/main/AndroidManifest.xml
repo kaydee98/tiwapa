@@ -41,7 +41,7 @@
             android:theme="@style/noAnimationTheme" />
         <activity android:name=".LoginActivity" />
         <activity
-            android:name=".family.MyFamily"
+            android:name=".family.MyFamilyActivity"
             android:theme="@style/noAnimationTheme" />
         <activity android:name=".family.AddRelativeActivity"></activity>
     </application>

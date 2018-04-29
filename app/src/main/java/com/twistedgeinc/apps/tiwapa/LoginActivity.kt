@@ -11,15 +11,15 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    var emailAddressEditText: EditText? = null
-    var passwordEditText: EditText? = null
+    private var emailAddressEditText: EditText? = null
+    private var passwordEditText: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        emailAddressEditText = findViewById(R.id.email_address)
-        passwordEditText = findViewById(R.id.password)
+        emailAddressEditText = findViewById<EditText>(R.id.email_address)
+        passwordEditText = findViewById<EditText>(R.id.password)
 
         findViewById<Button>(R.id.signin_button).setOnClickListener({ loginUser()})
         findViewById<Button>(R.id.register_button).setOnClickListener( {gotoRegisterActivity()})

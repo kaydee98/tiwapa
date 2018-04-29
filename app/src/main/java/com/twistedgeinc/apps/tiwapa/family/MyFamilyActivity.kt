@@ -1,5 +1,6 @@
 package com.twistedgeinc.apps.tiwapa.family
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -15,7 +16,7 @@ import com.twistedgeinc.apps.tiwapa.utils.BottomNavigationViewHelper
 
 const val MENU_ITEM_NUMBER = 1
 
-class MyFamily : AppCompatActivity() {
+class MyFamilyActivity : AppCompatActivity() {
     private var addPersonFAB: FloatingActionButton? = null
     private var addEventFAB: FloatingActionButton? = null
 
@@ -37,7 +38,9 @@ class MyFamily : AppCompatActivity() {
     }
 
     private fun addFamilyMember() {
-
+        val addRelativeIntent = Intent(this, AddRelativeActivity::class.java)
+        startActivity(addRelativeIntent)
+        finish()
     }
 
     private fun addFamilyEvent() {
@@ -48,7 +51,7 @@ class MyFamily : AppCompatActivity() {
         val bottomNavigationViewHelper = BottomNavigationViewHelper()
 
         bottomNavigationViewHelper.setupBottonNavigationView(bottomNavigationViewEx)
-        bottomNavigationViewHelper.setNavigationItemSelectedLister(this@MyFamily,bottomNavigationViewEx)
+        bottomNavigationViewHelper.setNavigationItemSelectedLister(this@MyFamilyActivity,bottomNavigationViewEx)
         val menu = bottomNavigationViewEx.menu
         val menuItem = menu.getItem(MENU_ITEM_NUMBER)
         menuItem.isChecked = true
