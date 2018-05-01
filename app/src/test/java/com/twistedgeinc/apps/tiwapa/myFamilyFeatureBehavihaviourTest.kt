@@ -26,7 +26,7 @@ class myFamilyFeatureBehavihaviourTest {
     @Test
     fun shouldOpenAddRelativeActivity() {
         val activity = Robolectric.setupActivity(MyFamilyActivity::class.java)
-        val addRelativeButton = activity.findViewById<FloatingActionButton>(R.id.add_family_fab)
+        val addRelativeButton = activity.findViewById<FloatingActionButton>(R.id.add_relative_fab)
 
         addRelativeButton.performClick()
         val expectedIntent = Intent(activity, AddRelativeActivity::class.java)

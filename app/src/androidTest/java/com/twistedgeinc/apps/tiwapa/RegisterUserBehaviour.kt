@@ -6,7 +6,6 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +15,7 @@ import org.junit.runner.RunWith
 class RegisterUserBehaviour {
 
     @get:Rule
-    val registerUserBehaviourRule: ActivityTestRule<RegisterUserActivity> = ActivityTestRule(RegisterUserActivity::class.java)
+    val registerUserBehaviourRule = ActivityTestRule(RegisterUserActivity::class.java)
 
 
     @Test
@@ -26,7 +25,6 @@ class RegisterUserBehaviour {
         onView(withId(R.id.email_address)).perform(typeText("kayoded@twistedge.com"), closeSoftKeyboard())
         onView(withId(R.id.password1)).perform(typeText("password"), closeSoftKeyboard())
         onView(withId(R.id.register_button)).perform(click())
-
 
 
     }

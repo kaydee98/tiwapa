@@ -74,13 +74,7 @@ class TiwapaPersonTest {
     @Test
     fun spouseAddedSuccessfully() {
         val tiwapaSpouses = kayodeDada.getRelatives(RelativeType.SPOUSE)
-        assertThat(tiwapaSpouses.get(0).lastName, `is`("Beatty"))
+        assertThat(tiwapaSpouses[0].lastName, `is`("Beatty"))
     }
 
-    @Test
-    fun shouldSaveRelativesToRealTimeDatabase(){
-        val tiwapaPersonDao = TiwapaPersonFirebaseDA()
-        kayodeDada.saveRelative( tiwapaPersonDao )
-
-    }
 }

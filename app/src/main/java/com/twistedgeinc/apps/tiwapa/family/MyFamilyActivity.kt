@@ -27,7 +27,7 @@ class MyFamilyActivity : AppCompatActivity() {
         setUpBottomNavigationView()
         setupViewPager()
 
-        addPersonFAB = findViewById<FloatingActionButton>(R.id.add_family_fab).apply {
+        addPersonFAB = findViewById<FloatingActionButton>(R.id.add_relative_fab).apply {
             setOnClickListener { addFamilyMember() }
         }
 

@@ -50,7 +50,7 @@ open class TiwapaPerson() {
 
     var gender: GenderType
         get() = _gender
-        set(sexValue) {  this._gender = sexValue
+        set(_gender) {  this._gender = _gender
             //throw invalidParameter Error
         }
 
@@ -78,7 +78,7 @@ open class TiwapaPerson() {
 
     fun getRelatives(relativeType: RelativeType?): MutableList<TiwapaPerson> {
 
-        var filteredRelatives = when(relativeType) {
+        return when(relativeType) {
 
             RelativeType.PARENT -> relatives.filter { it.relativeType == RelativeType.PARENT } as ArrayList<TiwapaPerson>
             RelativeType.CHILD -> relatives.filter { it.relativeType == RelativeType.CHILD } as ArrayList<TiwapaPerson>
@@ -87,13 +87,11 @@ open class TiwapaPerson() {
 
             else -> relatives
         }
-        return filteredRelatives
-
     }
 
     fun saveRelative(tiwapaPersonDao: ITiwapaPersonDataAccess) {
 
-            tiwapaPersonDao.addRelative(this)
+            //tiwapaPersonDao.addRelative(userId = )
     }
 
 }

@@ -6,7 +6,7 @@ interface ITiwapaPersonDataAccess {
 
     fun getAllRelatives(userId: String): ArrayList<TiwapaPerson>
 
-    fun addRelative(tiwapaPerson: TiwapaPerson): Boolean
+    fun addRelative(userId: String, tiwapaPerson: TiwapaPerson): Boolean
 
     fun deleteRelative(tiwapaPerson: TiwapaPerson): Boolean
 

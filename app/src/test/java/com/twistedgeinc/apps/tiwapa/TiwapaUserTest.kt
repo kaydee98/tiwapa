@@ -26,15 +26,12 @@ class TiwapaUserTest {
         }
 
         kayodedada = TiwapaUser(tiwapaAuthMock)
-
-
         kayodedada.profile = TiwapaPerson("Oluwatoyin", "Olukayode", "Dada", GenderType.MALE, RelativeType.SELF )
     }
 
     @Test
     fun shouldHaveAValidUser()
     {
-
         assertEquals(kayodedada.userId,  "mTgzm7hIMNYuWpRd519lIQRt0c63")
     }
 

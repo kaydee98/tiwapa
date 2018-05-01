@@ -7,14 +7,28 @@ import android.view.View
 import com.twistedgeinc.apps.tiwapa.R
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
+import com.twistedgeinc.apps.tiwapa.TiwapaFirebaseAuth
+import com.twistedgeinc.apps.tiwapa.TiwapaPersonFirebaseDA
+import com.twistedgeinc.apps.tiwapa.models.GenderType
+import com.twistedgeinc.apps.tiwapa.models.RelativeType
+import com.twistedgeinc.apps.tiwapa.models.TiwapaPerson
+import com.twistedgeinc.apps.tiwapa.models.TiwapaUser
+
+
+const val typeOfRelativePositionInvalid = 0
+const val typeOfRelativePositionParent = 1
+const val typeOfRelativePositionSpouse = 2
+const val typeOfRelativePositionChild = 3
+const val typeOfRelativePositionSibling = 4
 
 
 class AddRelativeActivity : AppCompatActivity(), OnItemSelectedListener {
 
-    private var firstNameET: EditText? = null
-    private var lastNameET: EditText? = null
-    private var dateOfBirthET: EditText? = null
-    private var genderRG: RadioGroup? = null
+    private lateinit var firstNameET: EditText
+    private lateinit var middleNameET: EditText
+    private lateinit var lastNameET: EditText
+    private lateinit var dateOfBirthET: EditText
+    private lateinit var genderRG: RadioGroup
     private var typeOfRelative = 0
 
 
@@ -28,6 +42,7 @@ class AddRelativeActivity : AppCompatActivity(), OnItemSelectedListener {
     private fun initView() {
 
         firstNameET = findViewById(R.id.firstName_EditText)
+        middleNameET = findViewById(R.id.middleName_EditText)
         lastNameET = findViewById(R.id.lastName_EditText)
         dateOfBirthET = findViewById(R.id.dateOfBirth_EditText)
         genderRG = findViewById(R.id.gender_RadioGroup)
@@ -58,9 +73,7 @@ class AddRelativeActivity : AppCompatActivity(), OnItemSelectedListener {
 
     //Click Listeners
     private fun cancelButtonOnClick(){
-        val myFamilyActivity = Intent(this, MyFamilyActivity::class.java)
-        startActivity(myFamilyActivity)
-        finish()
+        startMyFamilyActivity()
     }
 
     private fun addRelativeOnClick() {
@@ -69,29 +82,60 @@ class AddRelativeActivity : AppCompatActivity(), OnItemSelectedListener {
             return
         }
 
-        //TODO: Add Relative to Database
+        addRelativeToCurrentUserData()
+        startMyFamilyActivity()
 
+    }
+
+    private fun addRelativeToCurrentUserData() {
+
+
+        val firstName = firstNameET.text.toString()
+        val middleName = middleNameET.text.toString()
+        val lastName = lastNameET.text.toString()
+
+        val gender = when(genderRG.checkedRadioButtonId){
+            R.id.female_RadioButton -> GenderType.FEMALE
+            else -> GenderType.MALE
+        }
+
+        val relativeOfType = when(typeOfRelative) {
+            typeOfRelativePositionParent -> RelativeType.PARENT
+            typeOfRelativePositionSpouse -> RelativeType.SPOUSE
+            typeOfRelativePositionChild -> RelativeType.CHILD
+            typeOfRelativePositionSibling -> RelativeType.SIBLING
+            else -> RelativeType.SELF
+        }
+
+        val currentUser = TiwapaUser( TiwapaFirebaseAuth())
+        val tiwapaPersonFirebaseDA = TiwapaPersonFirebaseDA()
+        val relativePerson = TiwapaPerson(firstName, middleName, lastName, gender, relativeOfType)
+
+        tiwapaPersonFirebaseDA.addRelative(currentUser.userId!!, relativePerson)
+
+    }
+
+    private fun startMyFamilyActivity() {
         val myFamilyActivity = Intent(this, MyFamilyActivity::class.java)
         startActivity(myFamilyActivity)
         finish()
-
     }
 
     //Private Functions
     private fun isValidFormData(): Boolean {
         var bValid = true
 
-        if (firstNameET!!.text.isEmpty()) {
-            firstNameET!!.error = "First Name cannot be blank"
+        if (firstNameET.text.isEmpty()) {
+            firstNameET.error = "First Name cannot be blank"
             bValid = false
         }
 
-        if(lastNameET!!.text.isEmpty()) {
-            lastNameET!!.error = "Last Name cannot be blank"
+        if(lastNameET.text.isEmpty()) {
+            lastNameET.error = "Last Name cannot be blank"
             bValid = false
         }
 
-        if (genderRG!!.checkedRadioButtonId == -1){
+        if (genderRG.checkedRadioButtonId == -1){
             findViewById<RadioButton>(R.id.male_RadioButton).error = ""
             findViewById<RadioButton>(R.id.female_RadioButton).error = ""
 

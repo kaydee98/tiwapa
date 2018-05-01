@@ -48,12 +48,6 @@ class AddARelativeBehaviourTest {
             relativeTypeSpinner = findViewById(R.id.relativeTypes_Spinner)
         }
 
-        firstNameET!!.setText("Oyewole")
-        middleNameET!!.setText("Olubayode")
-        lastNameET!!.setText("Dada")
-        genderButton!!.check(R.id.male_RadioButton)
-        dateOfBirthET!!.setText("09/04/1969")
-        relativeTypeSpinner!!.setSelection(PARENT_RELATIVE_TYPE_SELECTION)
 
     }
 
@@ -94,6 +88,7 @@ class AddARelativeBehaviourTest {
         lastNameET!!.setText("")
         genderButton!!.clearCheck()
 
+
     }
 
     @Test
@@ -103,25 +98,6 @@ class AddARelativeBehaviourTest {
         addRelativeButton!!.performClick()
         assertThat(activity.findViewById<TextView>(R.id.relativeTypeLabel).error?.toString(), `is`(""))
         assertIntent(null)
-
-    }
-
-    @Test
-    fun clickingAddRelative_shouldAddARelative() {
-        whenFormDataFieldsAReValid()
-        addRelativeButton!!.performClick()
-
-        assertIntent(MyFamilyActivity::class.java)
-    }
-
-    private fun whenFormDataFieldsAReValid() {
-
-        firstNameET!!.setText("Oyewole")
-        middleNameET!!.setText("Olubayode")
-        lastNameET!!.setText("Dada")
-        genderButton!!.check(R.id.male_RadioButton)
-        dateOfBirthET!!.setText("09/04/1969")
-
 
     }
 

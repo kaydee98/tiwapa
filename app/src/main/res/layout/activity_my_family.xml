@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_family_fab"
+        android:id="@+id/add_relative_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
