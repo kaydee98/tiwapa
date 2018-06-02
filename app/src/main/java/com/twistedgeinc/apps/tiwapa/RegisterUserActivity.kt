@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -20,7 +22,7 @@ import com.twistedgeinc.apps.tiwapa.utils.ImageUtils
 import java.util.*
 import kotlin.Exception
 import com.google.firebase.firestore.FirebaseFirestore
-
+import com.google.firebase.storage.UploadTask
 
 
 /* TODO: [Begin TODO]
@@ -170,16 +172,33 @@ class RegisterUserActivity : AppCompatActivity() {
 
 
             val profilePhotoStoragePath = "$USER_PHOTOS_PATH/${currentUser.uid}/$PROFILE_PHOTOS/${UUID.randomUUID().toString()}"
-            val firebaseStorageRef = FirebaseStorage.getInstance().getReference().child(profilePhotoStoragePath)
+            val firebaseStorageRef = FirebaseStorage.getInstance().reference.child(profilePhotoStoragePath)
 
-            firebaseStorageRef.putBytes(imageUtils.compressImage( mImagePath))
-                    .addOnSuccessListener {taskSnapshot ->
+            val imageUploadTask = firebaseStorageRef.putBytes(imageUtils.compressImage( mImagePath))
 
-                        updatedUserProfile(currentUser, displayName, taskSnapshot.downloadUrl!!)
-                        createNewUser(currentUser.uid)
+            val urlTask = imageUploadTask.continueWithTask{ task ->
+                if (!task.isSuccessful) {
+                    throw task.exception!!
+                }
 
-                    }
-                    .addOnFailureListener{ exception -> logAndReportError( exception ) }
+                firebaseStorageRef.downloadUrl
+            }
+
+            urlTask.addOnSuccessListener { downloadUrl: Uri? ->
+
+                updatedUserProfile(currentUser, displayName, downloadUrl)
+                createNewUser(currentUser.uid)
+
+            }
+
+//            firebaseStorageRef.putBytes(imageUtils.compressImage( mImagePath))
+//                    .addOnSuccessListener {taskSnapshot ->
+//
+//                        updatedUserProfile(currentUser, displayName, taskSnapshot.downloadUrl!!)
+//                        createNewUser(currentUser.uid)
+//
+//                    }
+//                    .addOnFailureListener{ exception -> logAndReportError( exception ) }
         }
 
 
