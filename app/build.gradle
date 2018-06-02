@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:exifinterface:27.1.1'
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
@@ -73,6 +74,7 @@ dependencies {
 
     //Image Loading Library
     implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
