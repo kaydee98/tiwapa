@@ -4,13 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".family.ChildrenFragment">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:textSize="20sp"
-        android:text="Children Tab"  />
+        android:text="Children" />
 
 </FrameLayout>

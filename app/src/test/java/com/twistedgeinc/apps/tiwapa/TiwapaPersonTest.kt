@@ -34,10 +34,6 @@ class TiwapaPersonTest {
 
     }
 
-    @After
-    fun tearDown() {
-
-    }
 
     @Test
     fun parentsAddedWithValidData() {

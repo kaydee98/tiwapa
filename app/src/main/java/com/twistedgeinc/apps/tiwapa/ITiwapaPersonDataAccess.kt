@@ -1,10 +1,14 @@
 package com.twistedgeinc.apps.tiwapa
 
+import android.arch.lifecycle.LiveData
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.QuerySnapshot
 import com.twistedgeinc.apps.tiwapa.models.TiwapaPerson
+import kotlinx.coroutines.experimental.Deferred
 
 interface ITiwapaPersonDataAccess {
 
-    fun getAllRelatives(userId: String): ArrayList<TiwapaPerson>
+    suspend fun getAllRelatives(userId: String): QuerySnapshot
 
     fun addRelative(userId: String, tiwapaPerson: TiwapaPerson): Boolean
 

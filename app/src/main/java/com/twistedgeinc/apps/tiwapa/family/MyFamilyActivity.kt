@@ -9,9 +9,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.View
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import com.twistedgeinc.apps.tiwapa.R
+import com.twistedgeinc.apps.tiwapa.TiwapaFirebaseAuth
+import com.twistedgeinc.apps.tiwapa.TiwapaPersonFirebaseDA
+import com.twistedgeinc.apps.tiwapa.models.TiwapaPerson
 import com.twistedgeinc.apps.tiwapa.utils.BottomNavigationViewHelper
 
 const val MENU_ITEM_NUMBER = 1
@@ -60,18 +64,17 @@ class MyFamilyActivity : AppCompatActivity() {
 
     private fun setupViewPager() {
 
-        var viewPageAdapter = ViewPageAdapter(supportFragmentManager)
+        val viewPageAdapter = ViewPageAdapter(supportFragmentManager)
         viewPageAdapter.addFragment(ParentFragment(), getString(R.string.frag_parent_title))
         viewPageAdapter.addFragment(SiblingFragment(), getString(R.string.frag_sibling_title))
         viewPageAdapter.addFragment(ChildrenFragment(), getString(R.string.frag_children_title))
         viewPageAdapter.addFragment(LifeEventsFragment(), getString(R.string.frag_life_events_title))
 
-        var viewPager = findViewById<ViewPager>(R.id.fragment_view_pager)
+        val viewPager = findViewById<ViewPager>(R.id.fragment_view_pager)
         viewPager.adapter = viewPageAdapter
 
-        var tabsLayout = findViewById<TabLayout>(R.id.familty_tabs).apply {
+        findViewById<TabLayout>(R.id.family_tabs).apply {
             setupWithViewPager(viewPager)
-
             addOnTabSelectedListener( object: TabLayout.ViewPagerOnTabSelectedListener( viewPager) {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     super.onTabReselected(tab)
@@ -122,4 +125,6 @@ class MyFamilyActivity : AppCompatActivity() {
         }
 
     }
+
+
 }

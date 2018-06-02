@@ -18,16 +18,18 @@ import org.hamcrest.Matchers.allOf
 @LargeTest
 class MyFamilyInstrumentedTest {
 
-    @get:Rule
-    val myfamilyActivityRule = ActivityTestRule(MyFamilyActivity::class.java)
-
     @Test
     fun shouldDisplaySiblingsWhenInSiblingTab() {
         val matcher = allOf(withText(R.string.frag_sibling_title),
-                isDescendantOfA(withId(R.id.familty_tabs)))
-        //Test the adapterView
+                isDescendantOfA(withId(R.id.family_tabs)))
         onView(matcher).perform(click())
-        onView(withId(R.id.familty_tabs)).check(matches(isCompletelyDisplayed()));
+        onView(withId(R.id.family_tabs)).check(matches(isCompletelyDisplayed()));
+
+    }
+
+    @Test
+    fun shouldShowListOfSiblings() {
+
 
     }
 
